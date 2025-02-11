@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
 import { RiLoginCircleFill } from 'react-icons/ri';
+import Axios from 'axios';
 
 const Register = () => {
-  // ステート管理
+  // state
   const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegister = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      console.log('Register Success!');
-    } else {
-      console.log('Confirm Your Password');
+
+    // パスワードが一致しない場合
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match.');
+      return;
     }
+
+    // Axios POSTリクエスト
+    Axios.post("http://localhost:3002/register", {
+      Email: email,
+      userName: userName,
+      password: password
+    })
+      .then(() => {
+        console.log("User has been created");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -36,7 +53,7 @@ const Register = () => {
               <div className="relative">
                 <input
                   id="email"
-                  type="text"   //If type="mail", label comes down so I use "text"
+                  type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="cursor-text p-3 w-full bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-blue-500 peer"
@@ -46,6 +63,22 @@ const Register = () => {
                   className="absolute left-3 top-3 text-gray-500 transition-all transform scale-100 origin-top-left peer-focus:scale-75 peer-focus:-top-0.5 peer-focus:text-lime-400 peer-valid:scale-75 peer-valid:-top-0.5"
                 >
                   EMAIL.ADDRESS
+                </label>
+              </div>
+
+              <div className="relative">
+                <input
+                  id="userName"
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="cursor-text p-3 w-full bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-blue-500 peer"
+                />
+                <label
+                  htmlFor="userName"
+                  className="absolute left-3 top-3 text-gray-500 transition-all transform scale-100 origin-top-left peer-focus:scale-75 peer-focus:-top-0.5 peer-focus:text-lime-400 peer-valid:scale-75 peer-valid:-top-0.5"
+                >
+                  USERNAME
                 </label>
               </div>
 
@@ -84,6 +117,11 @@ const Register = () => {
               </div>
             </div>
 
+            {/* Error Message */}
+            {errorMessage && (
+              <p className="text-red-500 text-center">{errorMessage}</p>
+            )}
+
             <div className="flex justify-center group">
               <button
                 type="submit"
@@ -105,7 +143,6 @@ const Register = () => {
         <div className="flex flex-col justify-center items-center gap-1">
           <a href="/" className="underline mt-4 text-sm text-gray-800 hover:text-gray-900 opacity-90 cursor-pointer">FORGOT YOUR PASSWORD</a>
         </div>
-
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import "../../App.css"
 import { RiLoginCircleFill } from "react-icons/ri";
+import React from 'react';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Email:", email, "Password:", password);
@@ -24,7 +23,7 @@ export default function Login() {
     <h2 className="text-6xl text-gray-200 font-bold text-center mb-8 opacity-90">grafty</h2>
     <div className="relative z-10 p-8 bg-gray-900 bg-opacity-80 rounded-lg shadow-lg sm:w-[30%] w-[80%]">
     <form onSubmit={handleLogin} className="flex flex-col space-y-8">
-    <div className="flex flex-col space-y-3">
+    <div className="flex flex-col space-y-3 text-gray-800">
     <div className="relative">
                 <input
                   id="email"

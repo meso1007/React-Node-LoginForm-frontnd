@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import "./App.css"
+import "./App.css";
+import React from 'react';
 import Dashboard from './Compo/Dashboard/Dashboard'
 import Login from './Compo/Login/Login'
 import Register from './Compo/Register/Register'
