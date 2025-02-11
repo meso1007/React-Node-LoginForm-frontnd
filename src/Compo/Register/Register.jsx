@@ -19,18 +19,30 @@ const Register = () => {
       return;
     }
 
-    // Axios POSTリクエスト
-    Axios.post("http://localhost:3002/register", {
-      Email: email,
-      userName: userName,
-      password: password
-    })
-      .then(() => {
-        console.log("User has been created");
+    // FetchでPOSTリクエストを送信
+    fetch("http://localhost:3002/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Email: email,
+        UserName: userName,
+        Password: password
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.message === "User Added!") {
+        alert("User registered successfully!");
+        // 登録後の処理（リダイレクトなど）
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      setErrorMessage("Registration failed. Please try again.");
+    });
   };
 
   return (
