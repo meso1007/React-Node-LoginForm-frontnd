@@ -5,10 +5,37 @@ import React from 'react';
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] =useState("")
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
+    fetch("http://localhost:3002/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      console.log("HiMEnnn");
+      if (data.message === "Login successful") {
+        alert("Login successful!");
+        window.location.href = "/dashboard";
+      } else {
+        setErrorMessage(data.error || "Login failed. Please try again.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      setErrorMessage("Login failed. Please try again.");
+    });
   };
+  
+  
 
   return (
 <div className="relative flex items-center justify-center w-full min-h-screen bg-gray-900 text-gray-200">
@@ -17,7 +44,6 @@ export default function Login() {
     alt="Background"
     className="absolute top-0 left-0 w-full h-full object-cover opacity-40"
   />
-
   <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
     <div className="flex flex-col w-full h-full items-center">
     <h2 className="text-6xl text-gray-200 font-bold text-center mb-8 opacity-90">grafty</h2>
@@ -25,20 +51,20 @@ export default function Login() {
     <form onSubmit={handleLogin} className="flex flex-col space-y-8">
     <div className="flex flex-col space-y-3 text-gray-800">
     <div className="relative">
-                <input
-                  id="email"
-                  type="text"   //If type="mail", label comes down so I use "text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="cursor-text p-3 w-full bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-blue-500 peer"
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute left-3 top-3 text-gray-500 transition-all transform scale-100 origin-top-left peer-focus:scale-75 peer-focus:-top-0.5 peer-focus:text-lime-400 peer-valid:scale-75 peer-valid:-top-0.5"
-                >
-                  EMAIL.ADDRESS
-                </label>
-              </div>
+        <input
+          id="email"
+          type="text"  
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="cursor-text p-3 w-full bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-blue-500 peer"
+        />
+        <label
+          htmlFor="email"
+          className="absolute left-3 top-3 text-gray-500 transition-all transform scale-100 origin-top-left peer-focus:scale-75 peer-focus:-top-0.5 peer-focus:text-lime-400 peer-valid:scale-75 peer-valid:-top-0.5"
+        >
+          EMAIL.ADDRESS
+        </label>
+      </div>
 
         <div className="relative">
                 <input

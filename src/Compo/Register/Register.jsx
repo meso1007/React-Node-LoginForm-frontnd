@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { RiLoginCircleFill } from 'react-icons/ri';
-import Axios from 'axios';
 
 const Register = () => {
   // state
@@ -15,35 +14,41 @@ const Register = () => {
 
     // パスワードが一致しない場合
     if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
-      return;
+        setErrorMessage('Passwords do not match.');
+        return;
     }
 
     // FetchでPOSTリクエストを送信
     fetch("http://localhost:3002/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        Email: email,
-        UserName: userName,
-        Password: password
-      })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            Email: email,
+            UserName: userName,
+            Password: password
+        })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => { throw new Error(data.message || "Unknown error occurred"); });
+        }
+        return response.json();
+    })
     .then(data => {
-      console.log(data);
-      if (data.message === "User Added!") {
-        alert("User registered successfully!");
-        // 登録後の処理（リダイレクトなど）
-      }
+        console.log(data);
+        if (data.message === "User Added!") {
+            alert("User registered successfully!");
+            // 登録後の処理（リダイレクトなど）
+        }
     })
     .catch(error => {
-      console.error("Error:", error);
-      setErrorMessage("Registration failed. Please try again.");
+        console.error("Error:", error);
+        setErrorMessage(error.message || "Registration failed. Please try again.");
     });
-  };
+};
+
 
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen bg-gray-900 text-gray-200">
