@@ -65,7 +65,4 @@ This project is licensed under the MIT License.
 ## Contact
 If you have any questions or suggestions, feel free to reach out via email: **[diegoshoya2017@gmail.com]**
 
-# React-Node-LoginForm-FrontEnd
-
-# React-Node-LoginForm-frontnd
 # React-Node-LoginForm-frontnd
